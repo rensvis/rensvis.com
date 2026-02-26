@@ -1,0 +1,25 @@
+---
+title: Frontend Architecture in Large Organizations
+description: Notes on structuring frontend codebases, monorepos, and team workflows at scale.
+date: 2025-02-01
+tags: [Frontend, Architecture, Workflows]
+featured: false
+---
+
+Large organizations face unique challenges: many teams, legacy code, and the need for both autonomy and consistency.
+
+## Monorepos
+
+Tools like Nx, Turborepo, and pnpm workspaces help manage multiple apps and libraries in a single repository. Benefits:
+
+- Shared tooling and CI
+- Atomic refactors across packages
+- Easier dependency management
+
+## Code ownership
+
+Define clear ownership boundaries. Use CODEOWNERS, package-level docs, and architectural decision records (ADRs) so everyone knows who maintains what.
+
+## Design systems
+
+A centralized design system reduces inconsistency, but it needs dedicated ownership and a clear contribution model. Consider a "design system guild" that spans design and engineering.

@@ -1,0 +1,17 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ArticleHeader from '../components/article/ArticleHeader.astro';
+
+interface Props {
+  entry: CollectionEntry<'articles'>;
+}
+
+const { entry } = Astro.props;
+---
+
+<div class="min-h-screen">
+  <header class="container mx-auto max-w-2xl px-4 pt-16 pb-8">
+    <ArticleHeader entry={entry} />
+  </header>
+  <slot />
+</div>

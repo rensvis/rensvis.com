@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+import { SITE } from '../../lib/site';
+import ArticleHeader from '../../components/article/ArticleHeader.astro';
+
+const articles = await getCollection('articles');
+const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<PageLayout title={`Articles | ${SITE.name}`} description={`Articles by ${SITE.name} on Angular, Flutter, design systems, and frontend engineering.`}>
+  <main class="container mx-auto max-w-2xl px-4 py-16">
+    <h1 class="text-2xl font-bold">Articles</h1>
+    <p class="mt-2 text-muted-foreground">
+      {articles.length} article{articles.length === 1 ? '' : 's'}
+    </p>
+    <ul class="mt-8 space-y-6">
+      {sorted.map((entry) => (
+        <li>
+          <a href={`/articles/${entry.id}`} class="block rounded-lg border border-border p-4 transition-colors hover:bg-muted/50">
+            <ArticleHeader entry={entry} showDescription />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </main>
+</PageLayout>

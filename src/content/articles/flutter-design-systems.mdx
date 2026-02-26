@@ -1,0 +1,47 @@
+---
+title: Building Design Systems with Flutter
+description: How to structure a scalable design system in Flutter using theme extensions and custom widgets.
+date: 2025-02-10
+tags: [Flutter, Design Systems, Dart]
+featured: false
+---
+
+Design systems bring consistency and efficiency to product development. In Flutter, you can build one using `ThemeExtensions`, custom widgets, and a clear token hierarchy.
+
+## Theme extensions
+
+Flutter 3.16+ introduced `ThemeExtension`, which lets you add custom theme data:
+
+```dart
+@immutable
+class AppColors extends ThemeExtension<AppColors> {
+  const AppColors({
+    required this.primary,
+    required this.surface,
+  });
+
+  final Color primary;
+  final Color surface;
+
+  @override
+  AppColors copyWith({Color? primary, Color? surface}) {
+    return AppColors(
+      primary: primary ?? this.primary,
+      surface: surface ?? this.surface,
+    );
+  }
+
+  @override
+  AppColors lerp(ThemeExtension<AppColors>? other, double t) {
+    // ...
+  }
+}
+```
+
+## Custom widgets
+
+Wrap your design tokens in semantic widget APIs so that consuming code stays simple and consistent.
+
+## Summary
+
+A well-structured Flutter design system reduces duplication, improves maintainability, and keeps your UI aligned with brand guidelines. Start small, iterate, and document your decisions.

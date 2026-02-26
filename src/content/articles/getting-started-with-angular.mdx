@@ -1,0 +1,32 @@
+---
+title: Getting Started with Angular
+description: A practical guide to building your first Angular application with standalone components and signals.
+date: 2025-02-15
+tags: [Angular, TypeScript, Frontend]
+featured: true
+---
+
+Angular has evolved significantly with standalone components and signals. This guide walks you through setting up a modern Angular project and understanding the core concepts.
+
+## Prerequisites
+
+- Node.js 18+ 
+- A code editor (VS Code recommended with the Angular Language Service extension)
+
+## Creating a new project
+
+```bash
+npx @angular/cli@latest new my-app --standalone
+```
+
+The `--standalone` flag ensures your app uses standalone components by default, which simplifies the module system and aligns with Angular's future direction.
+
+## Key concepts
+
+1. **Standalone components** — No NgModules required; components import what they need directly.
+2. **Signals** — Reactive primitives that enable fine-grained reactivity without Zone.js overhead.
+3. **New control flow** — `@if`, `@for`, and `@switch` replace `*ngIf`, `*ngFor`, and `*ngSwitch`.
+
+## Next steps
+
+Explore the Angular docs for [standalone APIs](https://angular.dev) and [signals](https://angular.dev/guide/signals) to deepen your understanding.

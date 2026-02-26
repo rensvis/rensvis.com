@@ -1,0 +1,36 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Badge } from '@/components/ui/badge';
+
+interface Props {
+  entry: CollectionEntry<'articles'>;
+  showDescription?: boolean;
+}
+
+const { entry, showDescription = false } = Astro.props;
+const { title, date, tags, featured, description } = entry.data;
+
+const formattedDate = new Intl.DateTimeFormat('en-GB', {
+  dateStyle: 'long',
+}).format(date);
+---
+
+<header>
+  <div class="flex flex-wrap items-center gap-2">
+    {featured && (
+      <Badge variant="secondary" class="text-xs">Featured</Badge>
+    )}
+    {tags.map((tag) => (
+      <a href={`/tags/${tag}`} class="inline-block">
+        <Badge variant="outline" class="text-xs">{tag}</Badge>
+      </a>
+    ))}
+  </div>
+  <h2 class="mt-2 text-xl font-semibold">{title}</h2>
+  <time datetime={date.toISOString()} class="text-sm text-muted-foreground">
+    {formattedDate}
+  </time>
+  {showDescription && description && (
+    <p class="mt-2 text-sm text-muted-foreground">{description}</p>
+  )}
+</header>
