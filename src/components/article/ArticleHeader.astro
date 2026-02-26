@@ -1,36 +1,54 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from "@/components/ui/badge";
+import type { CollectionEntry } from "astro:content";
 
 interface Props {
-  entry: CollectionEntry<'articles'>;
+  entry: CollectionEntry<"articles">;
   showDescription?: boolean;
+  /** Render tags as links. Set false when inside another link (e.g. article card) to avoid invalid nested anchors. */
+  linkTags?: boolean;
 }
 
-const { entry, showDescription = false } = Astro.props;
+const { entry, showDescription = false, linkTags = false } = Astro.props;
 const { title, date, tags, featured, description } = entry.data;
 
-const formattedDate = new Intl.DateTimeFormat('en-GB', {
-  dateStyle: 'long',
+const formattedDate = new Intl.DateTimeFormat("en-GB", {
+  dateStyle: "long",
 }).format(date);
 ---
 
 <header>
   <div class="flex flex-wrap items-center gap-2">
-    {featured && (
-      <Badge variant="outline" className="text-xs">Featured</Badge>
-    )}
-    {tags.map((tag) => (
-      <a href={`/tags/${tag}`} class="inline-block">
-        <Badge variant="outline" className="text-xs">{tag}</Badge>
-      </a>
-    ))}
+    {
+      featured && (
+        <Badge variant="secondary" className="text-xs">
+          Featured
+        </Badge>
+      )
+    }
+    {
+      linkTags
+        ? tags.map((tag) => (
+            <a href={`/tags/${tag}`} class="inline-block">
+              <Badge variant="outline" className="text-xs">
+                {tag}
+              </Badge>
+            </a>
+          ))
+        : tags.map((tag) => (
+            <Badge variant="outline" className="text-xs">
+              {tag}
+            </Badge>
+          ))
+    }
   </div>
   <h2 class="mt-2 text-xl font-semibold">{title}</h2>
   <time datetime={date.toISOString()} class="text-sm text-muted-foreground">
     {formattedDate}
   </time>
-  {showDescription && description && (
-    <p class="mt-2 text-sm text-muted-foreground">{description}</p>
-  )}
+  {
+    showDescription && description && (
+      <p class="mt-2 text-sm text-muted-foreground">{description}</p>
+    )
+  }
 </header>

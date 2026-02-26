@@ -10,12 +10,6 @@ import { ThemeToggle } from './ThemeToggle';
     </a>
     <nav class="flex flex-wrap items-center gap-2 sm:gap-6" aria-label="Main navigation">
       <a
-        href="/"
-        class="text-sm text-muted-foreground transition-colors hover:text-foreground"
-      >
-        Home
-      </a>
-      <a
         href="/articles"
         class="text-sm text-muted-foreground transition-colors hover:text-foreground"
       >
@@ -28,18 +22,24 @@ import { ThemeToggle } from './ThemeToggle';
         Tags
       </a>
       <a
-        href="/search"
-        class="text-sm text-muted-foreground transition-colors hover:text-foreground"
-      >
-        Search
-      </a>
-      <a
         href="/about"
         class="text-sm text-muted-foreground transition-colors hover:text-foreground"
       >
         About
       </a>
-      <ThemeToggle client:load />
+      <div class="flex items-center gap-1">
+        <a
+          href="/search"
+          class="inline-flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+          aria-label="Search"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+        </a>
+        <ThemeToggle client:load />
+      </div>
     </nav>
   </div>
 </header>
