@@ -2,13 +2,29 @@
 import PageLayout from '../layouts/PageLayout.astro';
 import AuthorBlock from '../components/article/AuthorBlock.astro';
 import { SITE } from '../lib/site';
+import { AUTHOR } from '../lib/author';
 ---
 
 <PageLayout title={`About | ${SITE.name}`} description={SITE.description}>
   <main class="container mx-auto max-w-2xl px-4 py-16">
     <h1 class="text-2xl font-bold">About</h1>
+    <p class="mt-4 text-muted-foreground">
+      I'm a senior frontend engineer focused on design systems, component architecture, and developer experience.
+    </p>
     <div class="mt-8">
       <AuthorBlock />
     </div>
+    {AUTHOR.expertise && AUTHOR.expertise.length > 0 && (
+      <section class="mt-8">
+        <h2 class="text-lg font-semibold">Focus areas</h2>
+        <ul class="mt-2 flex flex-wrap gap-2">
+          {AUTHOR.expertise.map((area) => (
+            <li>
+              <span class="rounded-full bg-muted px-3 py-1 text-sm">{area}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
   </main>
 </PageLayout>

@@ -1,16 +1,56 @@
 ---
+import { getCollection } from 'astro:content';
 import PageLayout from '../layouts/PageLayout.astro';
+import ArticleHeader from '../components/article/ArticleHeader.astro';
 import { SITE } from '../lib/site';
 import { websiteSchema } from '../lib/structured-data';
+
+const allArticles = await getCollection('articles');
+const sorted = allArticles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const featured = sorted.filter((a) => a.data.featured);
+const recent = sorted.filter((a) => !a.data.featured).slice(0, 5);
 ---
 
 <PageLayout title={SITE.name} description={SITE.description} structuredData={websiteSchema()}>
   <main class="container mx-auto max-w-2xl px-4 py-16">
-    <h1 class="text-2xl font-bold">{SITE.name}</h1>
-    <p class="mt-2 text-muted-foreground">{SITE.description}</p>
-    <div class="mt-6 flex gap-4">
-      <a href="/articles" class="text-primary underline-offset-4 hover:underline">Articles</a>
-      <a href="/about" class="text-primary underline-offset-4 hover:underline">About</a>
-    </div>
+    <section>
+      <h1 class="text-2xl font-bold">{SITE.name}</h1>
+      <p class="mt-2 text-muted-foreground">{SITE.description}</p>
+      <p class="mt-4 text-muted-foreground">Thoughts on Angular, Flutter, design systems, and frontend architecture.</p>
+      <div class="mt-6 flex flex-wrap gap-4">
+        <a href="/articles" class="text-primary underline-offset-4 hover:underline">Articles</a>
+        <a href="/search" class="text-primary underline-offset-4 hover:underline">Search</a>
+        <a href="/about" class="text-primary underline-offset-4 hover:underline">About</a>
+      </div>
+    </section>
+
+    {featured.length > 0 && (
+      <section class="mt-16">
+        <h2 class="text-xl font-semibold">Featured</h2>
+        <ul class="mt-4 space-y-4">
+          {featured.map((entry) => (
+            <li>
+              <a href={`/articles/${entry.id}`} class="block rounded-lg border border-border p-4 transition-colors hover:bg-muted/50">
+                <ArticleHeader entry={entry} showDescription />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <section class="mt-16">
+      <h2 class="text-xl font-semibold">Recent</h2>
+      <ul class="mt-4 space-y-4">
+        {recent.map((entry) => (
+          <li>
+            <a href={`/articles/${entry.id}`} class="block rounded-lg border border-border p-4 transition-colors hover:bg-muted/50">
+              <ArticleHeader entry={entry} showDescription />
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a href="/articles" class="mt-4 inline-block text-sm text-primary underline-offset-4 hover:underline">View all articles</a>
+    </section>
   </main>
 </PageLayout>
