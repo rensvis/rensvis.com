@@ -46,7 +46,7 @@ const imageUrl = image ? (image.startsWith('http') ? image : `${siteUrl}${image.
   <script type="application/ld+json" set:html={structuredData} is:inline />
 )}
 
-<!-- Umami Analytics (optional) -->
+<!-- Umami Analytics (loads when PUBLIC_UMAMI_WEBSITE_ID is set at build time) -->
 {import.meta.env.PUBLIC_UMAMI_WEBSITE_ID && (
   <script
     is:inline
