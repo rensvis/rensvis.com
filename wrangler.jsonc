@@ -13,5 +13,9 @@
   "observability": {
     "enabled": true
   },
+  "routes": [
+    "rensvis.com/*",
+    "www.rensvis.com/*"
+  ],
   "$schema": "node_modules/wrangler/config-schema.json"
 }

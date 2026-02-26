@@ -18,7 +18,7 @@ const formattedDate = new Intl.DateTimeFormat('en-GB', {
 <header>
   <div class="flex flex-wrap items-center gap-2">
     {featured && (
-      <Badge variant="secondary" className="text-xs">Featured</Badge>
+      <Badge variant="outline" className="text-xs">Featured</Badge>
     )}
     {tags.map((tag) => (
       <a href={`/tags/${tag}`} class="inline-block">
