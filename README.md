@@ -40,3 +40,12 @@ src/
 npm install
 npm run dev
 ```
+
+## Environment Variables
+
+Optional, for deployment:
+
+| Variable | Description |
+|----------|-------------|
+| `PUBLIC_UMAMI_WEBSITE_ID` | Umami analytics website ID (enables tracking) |
+| `PUBLIC_UMAMI_URL` | Umami script URL (default: `https://analytics.umami.is/script.js`) |

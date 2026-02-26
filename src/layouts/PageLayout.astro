@@ -11,9 +11,11 @@ interface Props {
   canonical?: string;
   image?: string;
   structuredData?: string;
+  /** Load Pagefind scripts (for search page) */
+  loadPagefind?: boolean;
 }
 
-const { title, description, canonical, image, structuredData } = Astro.props;
+const { title, description, canonical, image, structuredData, loadPagefind } = Astro.props;
 ---
 
 <!doctype html>
@@ -21,6 +23,12 @@ const { title, description, canonical, image, structuredData } = Astro.props;
   <head>
     <BaseHead title={title} description={description} canonical={canonical} image={image} structuredData={structuredData} />
     <link rel="alternate" type="application/rss+xml" title={`${SITE.name} RSS`} href={`${SITE.url}/rss.xml`} />
+    {loadPagefind && (
+      <>
+        <link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+        <script src="/pagefind/pagefind-ui.js" defer />
+      </>
+    )}
     <script is:inline>
       (function(){var s=localStorage.getItem('theme');var d=window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',s==='dark'||(!s&&d));})();
     </script>
