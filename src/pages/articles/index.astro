@@ -17,7 +17,7 @@ const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
     <ul class="mt-8 space-y-6">
       {sorted.map((entry) => (
         <li>
-          <a href={`/articles/${entry.id}`} class="block rounded-lg border border-border p-4 transition-colors hover:bg-muted/50">
+          <a href={`/articles/${entry.id}`} class="block rounded-lg border border-border p-4 transition-colors hover:bg-muted/50" aria-label={entry.data.title}>
             <ArticleHeader entry={entry} showDescription />
           </a>
         </li>

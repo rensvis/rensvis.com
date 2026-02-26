@@ -30,7 +30,7 @@ const recent = sorted.filter((a) => !a.data.featured).slice(0, 5);
         <ul class="mt-4 space-y-4">
           {featured.map((entry) => (
             <li>
-              <a href={`/articles/${entry.id}`} class="block rounded-lg border border-border p-4 transition-colors hover:bg-muted/50">
+              <a href={`/articles/${entry.id}`} class="block rounded-lg border border-border p-4 transition-colors hover:bg-muted/50" aria-label={entry.data.title}>
                 <ArticleHeader entry={entry} showDescription />
               </a>
             </li>
@@ -44,7 +44,7 @@ const recent = sorted.filter((a) => !a.data.featured).slice(0, 5);
       <ul class="mt-4 space-y-4">
         {recent.map((entry) => (
           <li>
-            <a href={`/articles/${entry.id}`} class="block rounded-lg border border-border p-4 transition-colors hover:bg-muted/50">
+            <a href={`/articles/${entry.id}`} class="block rounded-lg border border-border p-4 transition-colors hover:bg-muted/50" aria-label={entry.data.title}>
               <ArticleHeader entry={entry} showDescription />
             </a>
           </li>
