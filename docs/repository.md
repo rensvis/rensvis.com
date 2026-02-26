@@ -1,5 +1,17 @@
 # Repository
 
+## Commit format
+
+Conventional Commits enforced via commitlint + husky:
+
+```
+type: description
+```
+
+**Types:** `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, `build`, `ci`
+
+**Examples:** `feat: add dark mode`, `fix: resolve header layout`, `docs: update testing guide`
+
 ## Rulesets
 
 Branch rules are defined in code under `.github/rulesets/`. GitHub does not auto-sync them—you must apply changes manually.
