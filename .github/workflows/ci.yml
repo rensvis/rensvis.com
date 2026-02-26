@@ -50,30 +50,44 @@ jobs:
         run: |
           echo "## CI Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Check | Result |" >> $GITHUB_STEP_SUMMARY
-          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
 
           if [ -f typecheck.log ]; then
+            echo "### Typecheck" >> $GITHUB_STEP_SUMMARY
             FILES=$(grep -oE 'Result \([0-9]+ files\)' typecheck.log | grep -oE '[0-9]+' | head -1)
-            echo "| Typecheck | ✅ ${FILES:-?} files |" >> $GITHUB_STEP_SUMMARY
+            echo "✅ ${FILES:-?} files checked" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
           fi
 
           if [ -f build.log ]; then
+            echo "### Build" >> $GITHUB_STEP_SUMMARY
             PAGES=$(grep -oE '[0-9]+ page\(s\) built' build.log | grep -oE '[0-9]+' | tail -1)
             TIME=$(grep -oE 'built in [0-9.]+s' build.log | grep -oE '[0-9.]+s' | tail -1)
-            echo "| Build | ✅ ${PAGES:-?} pages in ${TIME:-—} |" >> $GITHUB_STEP_SUMMARY
+            echo "✅ ${PAGES:-?} pages in ${TIME:-—}" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
           fi
 
           if [ -f a11y.log ]; then
+            echo "### A11y" >> $GITHUB_STEP_SUMMARY
             A11Y=$(grep -oE '[0-9]+ passed' a11y.log | head -1)
-            echo "| A11y | ✅ ${A11Y:-passed} |" >> $GITHUB_STEP_SUMMARY
+            echo "✅ ${A11Y:-passed}" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
           fi
 
           if [ -f lhci.log ]; then
+            echo "### Lighthouse" >> $GITHUB_STEP_SUMMARY
+            LHR=$(ls -t .lighthouseci/lhr-*.json 2>/dev/null | head -1)
+            if [ -n "$LHR" ] && command -v jq >/dev/null 2>&1; then
+              PERF=$(jq -r '.categories.performance.score * 100 | floor' "$LHR" 2>/dev/null || echo "—")
+              ACC=$(jq -r '.categories.accessibility.score * 100 | floor' "$LHR" 2>/dev/null || echo "—")
+              SEO=$(jq -r '.categories.seo.score * 100 | floor' "$LHR" 2>/dev/null || echo "—")
+              BP=$(jq -r '.["categories"]["best-practices"].score * 100 | floor' "$LHR" 2>/dev/null || echo "—")
+              echo "| Performance | Accessibility | SEO | Best Practices |" >> $GITHUB_STEP_SUMMARY
+              echo "|:---:|:---:|:---:|:---:|" >> $GITHUB_STEP_SUMMARY
+              echo "| ${PERF} | ${ACC} | ${SEO} | ${BP} |" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+            fi
             REPORT_URL=$(grep -oE 'https://storage\.googleapis\.com[^ ]+\.report\.html' lhci.log | head -1)
             if [ -n "$REPORT_URL" ]; then
-              echo "| Lighthouse | [View report]($REPORT_URL) |" >> $GITHUB_STEP_SUMMARY
-            else
-              echo "| Lighthouse | See logs |" >> $GITHUB_STEP_SUMMARY
+              echo "[View full report]($REPORT_URL)" >> $GITHUB_STEP_SUMMARY
             fi
           fi
