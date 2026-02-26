@@ -24,7 +24,7 @@ Self-hosted, privacy-friendly analytics for rensvis.com. Deployed via Railway wi
 
 4. Access Umami at http://localhost:3000
 
-5. Create admin account and add a website. Copy the website ID for `PUBLIC_UMAMI_WEBSITE_ID`.
+5. Create admin account and add a website. Copy the website ID into `src/lib/analytics.ts`.
 
 ## Railway Deployment
 
@@ -65,11 +65,6 @@ Configure via:
 - Railway domain settings
 - Cloudflare DNS (CNAME `analytics.rensvis.com` → Railway)
 
-## Cloudflare Pages (Blog)
+## Blog integration
 
-Set these environment variables for the blog:
-
-| Variable | Description |
-|----------|-------------|
-| `PUBLIC_UMAMI_SCRIPT_URL` | `https://analytics.rensvis.com/script.js` (or override if needed) |
-| `PUBLIC_UMAMI_WEBSITE_ID` | Website ID from Umami dashboard |
+Set `websiteId` in `src/lib/analytics.ts` from your Umami dashboard. Config is in-repo (source of truth).

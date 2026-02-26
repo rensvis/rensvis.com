@@ -17,7 +17,7 @@ Design goals:
 Production architecture:
 
 ```id="arch1"
-Cloudflare Pages (blog)
+Cloudflare Workers (blog)
     ↓
 analytics.rensvis.com
     ↓
@@ -194,23 +194,15 @@ SSL handled automatically.
 
 # Astro Integration
 
-Umami script added to base layout:
+Umami script in `BaseHead.astro`, config in `src/lib/analytics.ts`:
 
 ```astro id="astro1"
-<script
-  async
-  defer
-  src={import.meta.env.PUBLIC_UMAMI_SCRIPT_URL}
-  data-website-id={import.meta.env.PUBLIC_UMAMI_WEBSITE_ID}
-/>
+{UMAMI.websiteId && (
+  <script defer src={UMAMI.scriptUrl} data-website-id={UMAMI.websiteId} ... />
+)}
 ```
 
-Cloudflare Pages environment variables:
-
-```env id="astro2"
-PUBLIC_UMAMI_SCRIPT_URL=https://analytics.rensvis.com/script.js
-PUBLIC_UMAMI_WEBSITE_ID=your-website-id
-```
+Set `websiteId` in `src/lib/analytics.ts` from your Umami dashboard. Repo is source of truth.
 
 ---
 
@@ -274,10 +266,10 @@ Repo:
 * reproducibility
 * portability
 
-Cloudflare Pages:
+Cloudflare Workers:
 
 * blog hosting
-* analytics script integration
+* analytics script (config in `src/lib/analytics.ts`)
 
 ---
 

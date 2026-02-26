@@ -7,7 +7,7 @@ Personal developer blog built with Astro, React, MDX, Tailwind, and shadcn/ui.
 - **Framework**: Astro
 - **UI**: React, Tailwind CSS, shadcn/ui
 - **Content**: MDX via Astro Content Collections
-- **Deploy**: Cloudflare Pages
+- **Deploy**: Cloudflare Workers (static assets)
 
 ## Commands
 

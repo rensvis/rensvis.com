@@ -2,7 +2,7 @@
 
 ## Current setup
 
-**Platform:** Cloudflare (Pages / Workers)
+**Platform:** Cloudflare Workers (static assets binding; deploy via `wrangler deploy`)
 
 **Build output:** `dist/` — static HTML, assets, Pagefind index, optional Worker entrypoint
 
