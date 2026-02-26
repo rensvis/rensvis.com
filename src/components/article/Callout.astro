@@ -1,0 +1,42 @@
+---
+interface Props {
+  type?: 'info' | 'warning' | 'tip';
+  title?: string;
+}
+
+const { type = 'info', title } = Astro.props;
+
+const config = {
+  info: {
+    label: 'Note',
+    icon: 'ℹ️',
+    class: 'border-l-blue-500 bg-blue-50 dark:bg-blue-950/30 dark:border-blue-600',
+  },
+  warning: {
+    label: 'Warning',
+    icon: '⚠️',
+    class: 'border-l-amber-500 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-600',
+  },
+  tip: {
+    label: 'Tip',
+    icon: '💡',
+    class: 'border-l-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 dark:border-emerald-600',
+  },
+};
+
+const { label, class: boxClass } = config[type];
+const displayTitle = title ?? label;
+---
+
+<aside
+  class={`my-6 rounded-r-md border-l-4 px-4 py-3 ${boxClass}`}
+  role="note"
+>
+  <p class="mb-2 font-medium">
+    <span class="mr-2">{config[type].icon}</span>
+    {displayTitle}
+  </p>
+  <div class="prose prose-sm dark:prose-invert max-w-none">
+    <slot />
+  </div>
+</aside>

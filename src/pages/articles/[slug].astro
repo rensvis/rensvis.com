@@ -1,7 +1,10 @@
 ---
-import { getCollection, getEntry, render } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import Callout from '../../components/article/Callout.astro';
+import Figure from '../../components/article/Figure.astro';
+import AuthorBlock from '../../components/article/AuthorBlock.astro';
 import { SITE } from '../../lib/site';
 
 export async function getStaticPaths() {
@@ -17,13 +20,21 @@ interface Props {
 }
 
 const { entry } = Astro.props;
-const { Content, headings } = await render(entry);
+const { Content } = await render(entry);
+
+const mdxComponents = {
+  Callout,
+  Figure,
+};
 ---
 
 <PageLayout title={`${entry.data.title} | ${SITE.name}`} description={entry.data.description}>
   <ArticleLayout entry={entry}>
     <article class="prose prose-neutral prose-lg dark:prose-invert mx-auto max-w-2xl px-4 py-16">
-      <Content />
+      <Content components={mdxComponents} />
     </article>
+    <div class="container mx-auto max-w-2xl px-4 pb-16">
+      <AuthorBlock />
+    </div>
   </ArticleLayout>
 </PageLayout>
