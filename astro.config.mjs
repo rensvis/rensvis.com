@@ -13,7 +13,12 @@ export default defineConfig({
   site: 'https://rensvis.com',
 
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    build: {
+      rollupOptions: {
+        external: ["/pagefind/pagefind.js"],
+      },
+    },
   },
 
   integrations: [react(), mdx(), sitemap()],

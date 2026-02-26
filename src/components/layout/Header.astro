@@ -1,6 +1,7 @@
 ---
 import { SITE } from '@/lib/site';
 import { ThemeToggle } from './ThemeToggle';
+import { SearchCommand } from './SearchCommand';
 ---
 
 <header class="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -28,16 +29,7 @@ import { ThemeToggle } from './ThemeToggle';
         About
       </a>
       <div class="flex items-center gap-1">
-        <a
-          href="/search"
-          class="inline-flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-          aria-label="Search"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.3-4.3" />
-          </svg>
-        </a>
+        <SearchCommand client:load />
         <ThemeToggle client:load />
       </div>
     </nav>

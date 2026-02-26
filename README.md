@@ -48,4 +48,4 @@ Optional, for deployment:
 | Variable | Description |
 |----------|-------------|
 | `PUBLIC_UMAMI_WEBSITE_ID` | Umami analytics website ID (enables tracking) |
-| `PUBLIC_UMAMI_URL` | Umami script URL (default: `https://analytics.umami.is/script.js`) |
+| `PUBLIC_UMAMI_SCRIPT_URL` | Umami script URL (default: `https://analytics.rensvis.com/script.js`) |
