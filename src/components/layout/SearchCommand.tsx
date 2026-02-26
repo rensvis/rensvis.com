@@ -31,7 +31,7 @@ export function SearchCommand({
   React.useEffect(() => {
     const isMac =
       typeof navigator !== "undefined" &&
-      /Mac|iPhone|iPod|iPad/i.test(navigator.platform);
+      /Mac|iPhone|iPod|iPad/i.test(navigator.userAgent);
     setShortcut(isMac ? "⌘K" : "Ctrl+K");
   }, []);
   const [results, setResults] = React.useState<SearchResult[]>([]);
