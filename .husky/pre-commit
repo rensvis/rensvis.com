@@ -1,1 +1,1 @@
-npx astro check
+npx astro check && npm run lint

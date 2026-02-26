@@ -12,6 +12,8 @@ type: description
 
 **Examples:** `feat: add dark mode`, `fix: resolve header layout`, `docs: update testing guide`
 
+**Pre-commit:** `astro check` + `npm run lint` (typecheck and ESLint)
+
 ## Rulesets
 
 Branch rules are defined in code under `.github/rulesets/`. GitHub does not auto-sync them—you must apply changes manually.

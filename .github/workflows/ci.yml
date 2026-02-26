@@ -25,6 +25,9 @@ jobs:
         id: typecheck
         run: npx astro check 2>&1 | tee typecheck.log
 
+      - name: Lint
+        run: npm run lint
+
       - name: Build
         id: build
         run: npm run build 2>&1 | tee build.log

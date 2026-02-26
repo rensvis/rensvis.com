@@ -66,7 +66,7 @@ import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 
 test('homepage has no accessibility violations', async ({ page }) => {
-  await page.goto('http://localhost:4321')
+  await page.goto('/')
 
   const results = await new AxeBuilder({ page }).analyze()
 
@@ -135,7 +135,7 @@ package.json
 {
   "scripts": {
     "build": "astro build && pagefind --site dist",
-    "preview": "astro preview",
+    "preview": "npm run build && wrangler dev --port 4321",
     "test:a11y": "playwright test",
     "test:lighthouse": "lhci autorun",
     "test": "npm run test:a11y && npm run test:lighthouse"
@@ -160,6 +160,7 @@ on:
   push:
     branches: [main]
   pull_request:
+    branches: [main]
 
 jobs:
   test:
@@ -171,12 +172,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
-      - run: npm install
+      - run: npm ci
 
       - run: npm run build
 
-      - run: npx playwright install --with-deps
+      - run: npx playwright install --with-deps chromium
 
       - run: npm run preview &
       - run: npx wait-on http://localhost:4321

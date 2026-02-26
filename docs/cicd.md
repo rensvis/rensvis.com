@@ -7,13 +7,13 @@ push to main → Cloudflare Pages deploys immediately
              → GitHub Actions runs QA in parallel
 ```
 
-Cloudflare deploys on every push to `main`; there is no gate to stop it. GitHub Actions runs typecheck and build as a parallel QA signal.
+Cloudflare deploys on every push to `main`; there is no gate to stop it. GitHub Actions runs QA as a parallel signal.
 
 ## Workflows
 
 **ci.yml** — Runs QA on every push to `main` and every PR. Executes in parallel with Cloudflare Pages deployment (does not block it).
 
-- Steps: typecheck (`astro check`) → build (`npm run build`)
+- Steps: typecheck (`astro check`) → build (`npm run build`) → a11y (Playwright + axe) → Lighthouse
 
 ## QA failure
 
@@ -26,4 +26,5 @@ Before pushing:
 ```sh
 npx astro check
 npm run build
+npm run test
 ```

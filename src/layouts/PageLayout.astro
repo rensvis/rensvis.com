@@ -30,7 +30,7 @@ const { title, description, canonical, image, structuredData, loadPagefind } = A
       </>
     )}
     <script is:inline>
-      (function(){var s=localStorage.getItem('theme');var d=window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',s==='dark'||(!s&&d));})();
+      (function(){const s=localStorage.getItem('theme');const d=window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',s==='dark'||(!s&&d));})();
     </script>
   </head>
   <body class="min-h-screen flex flex-col">
