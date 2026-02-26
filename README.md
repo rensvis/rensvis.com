@@ -41,11 +41,6 @@ npm install
 npm run dev
 ```
 
-## Environment Variables
+## Analytics
 
-Optional, for deployment:
-
-| Variable | Description |
-|----------|-------------|
-| `PUBLIC_UMAMI_WEBSITE_ID` | Umami analytics website ID (enables tracking) |
-| `PUBLIC_UMAMI_SCRIPT_URL` | Umami script URL (default: `https://analytics.rensvis.com/script.js`) |
+Umami config is in `src/lib/analytics.ts`. Set `websiteId` from your Umami dashboard to enable tracking.

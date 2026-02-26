@@ -1,5 +1,6 @@
 ---
 import { SITE } from '@/lib/site';
+import { UMAMI } from '@/lib/analytics';
 
 interface Props {
   title: string;
@@ -46,13 +47,13 @@ const imageUrl = image ? (image.startsWith('http') ? image : `${siteUrl}${image.
   <script type="application/ld+json" set:html={structuredData} is:inline />
 )}
 
-<!-- Umami Analytics (loads when PUBLIC_UMAMI_WEBSITE_ID is set at build time) -->
-{import.meta.env.PUBLIC_UMAMI_WEBSITE_ID && (
+<!-- Umami Analytics -->
+{UMAMI.websiteId && (
   <script
     is:inline
     defer
-    src={import.meta.env.PUBLIC_UMAMI_SCRIPT_URL || 'https://analytics.rensvis.com/script.js'}
-    data-website-id={import.meta.env.PUBLIC_UMAMI_WEBSITE_ID}
+    src={UMAMI.scriptUrl}
+    data-website-id={UMAMI.websiteId}
     data-domains={SITE.url.replace(/^https?:\/\//, '')}
   />
 )}
