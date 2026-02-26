@@ -1,9 +1,10 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
 import { SITE } from '../lib/site';
+import { websiteSchema } from '../lib/structured-data';
 ---
 
-<PageLayout title={SITE.name} description={SITE.description}>
+<PageLayout title={SITE.name} description={SITE.description} structuredData={websiteSchema()}>
   <main class="container mx-auto max-w-2xl px-4 py-16">
     <h1 class="text-2xl font-bold">{SITE.name}</h1>
     <p class="mt-2 text-muted-foreground">{SITE.description}</p>
