@@ -22,7 +22,7 @@ const { Content, headings } = await render(entry);
 
 <PageLayout title={`${entry.data.title} | ${SITE.name}`} description={entry.data.description}>
   <ArticleLayout entry={entry}>
-    <article class="prose prose-neutral dark:prose-invert mx-auto max-w-2xl px-4 py-16">
+    <article class="prose prose-neutral prose-lg dark:prose-invert mx-auto max-w-2xl px-4 py-16">
       <Content />
     </article>
   </ArticleLayout>
