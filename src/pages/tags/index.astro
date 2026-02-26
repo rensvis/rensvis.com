@@ -9,8 +9,10 @@ const tagCounts = articles.reduce<Record<string, number>>((acc, entry) => {
     acc[tag] = (acc[tag] ?? 0) + 1;
   }
   return acc;
-});
-const tags = Object.entries(tagCounts).sort(([, a], [, b]) => b - a);
+}, {});
+const tags = Object.entries(tagCounts).sort(
+  ([, a]: [string, number], [, b]: [string, number]) => b - a
+);
 ---
 
 <PageLayout title={`Tags | ${SITE.name}`} description={`Browse articles by tag.`}>

@@ -43,12 +43,13 @@ const imageUrl = image ? (image.startsWith('http') ? image : `${siteUrl}${image.
 
 <!-- Structured Data -->
 {structuredData && (
-  <script type="application/ld+json" set:html={structuredData} />
+  <script type="application/ld+json" set:html={structuredData} is:inline />
 )}
 
 <!-- Umami Analytics (optional) -->
 {import.meta.env.PUBLIC_UMAMI_WEBSITE_ID && (
   <script
+    is:inline
     defer
     src={import.meta.env.PUBLIC_UMAMI_URL || 'https://analytics.umami.is/script.js'}
     data-website-id={import.meta.env.PUBLIC_UMAMI_WEBSITE_ID}
