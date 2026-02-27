@@ -26,14 +26,6 @@ export function SearchCommand({
 }) {
   const [open, setOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
-  const [shortcut, setShortcut] = React.useState("Ctrl+K");
-
-  React.useEffect(() => {
-    const isMac =
-      typeof navigator !== "undefined" &&
-      /Mac|iPhone|iPod|iPad/i.test(navigator.userAgent);
-    setShortcut(isMac ? "⌘K" : "Ctrl+K");
-  }, []);
   const [results, setResults] = React.useState<SearchResult[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [pagefindReady, setPagefindReady] = React.useState<boolean | null>(null);
@@ -143,8 +135,12 @@ export function SearchCommand({
             <circle cx="11" cy="11" r="8" />
             <path d="m21 21-4.3-4.3" />
           </svg>
-          <kbd className="pointer-events-none hidden rounded border border-border bg-muted/50 px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground sm:inline-block">
-            {shortcut}
+          {/* platform-mac set in head before paint – no Ctrl/⌘ flash */}
+          <kbd className="pointer-events-none hidden rounded border border-border bg-muted/50 px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground sm:inline-block platform-mac:hidden">
+            Ctrl+K
+          </kbd>
+          <kbd className="pointer-events-none hidden rounded border border-border bg-muted/50 px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground sm:platform-mac:inline-block">
+            ⌘K
           </kbd>
         </Button>
       )}

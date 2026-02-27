@@ -30,7 +30,15 @@ const { title, description, canonical, image, structuredData, loadPagefind } = A
       </>
     )}
     <script is:inline>
-      (function(){const s=localStorage.getItem('theme');const d=window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',s==='dark'||(!s&&d));})();
+      /* Runs before paint: set theme + platform so React avoids flash. */
+      (function(){
+        const s=localStorage.getItem('theme')||'system';
+        const d=window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDark=s==='dark'||(s==='system'&&d);
+        document.documentElement.classList.toggle('dark',isDark);
+        if(/Mac|iPhone|iPod|iPad/i.test(navigator.userAgent))
+          document.documentElement.classList.add('platform-mac');
+      })();
     </script>
   </head>
   <body class="min-h-screen flex flex-col">
