@@ -7,9 +7,16 @@ interface Props {
   showDescription?: boolean;
   /** Render tags as links. Set false when inside another link (e.g. article card) to avoid invalid nested anchors. */
   linkTags?: boolean;
+  /** Use h3 instead of h1 (for article previews in lists/cards). */
+  preview?: boolean;
 }
 
-const { entry, showDescription = false, linkTags = false } = Astro.props;
+const {
+  entry,
+  showDescription = false,
+  linkTags = false,
+  preview = false,
+} = Astro.props;
 const { title, date, tags, featured, description } = entry.data;
 
 const formattedDate = new Intl.DateTimeFormat("en-GB", {
@@ -42,7 +49,7 @@ const formattedDate = new Intl.DateTimeFormat("en-GB", {
           ))
     }
   </div>
-  <h2 class="mt-2 text-xl font-semibold">{title}</h2>
+  {preview ? <h3 class="mt-2">{title}</h3> : <h1 class="mt-2">{title}</h1>}
   <time datetime={date.toISOString()} class="text-sm text-muted-foreground">
     {formattedDate}
   </time>

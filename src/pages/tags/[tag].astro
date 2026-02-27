@@ -21,7 +21,7 @@ const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
 
 <PageLayout title={`${tag} | ${SITE.name}`} description={`Articles tagged with ${tag}.`}>
   <main class="container mx-auto max-w-2xl px-4 py-16">
-    <h1 class="text-2xl font-bold">Tag: {tag}</h1>
+    <h1>Tag: {tag}</h1>
     <p class="mt-2 text-muted-foreground">
       {articles.length} article{articles.length === 1 ? '' : 's'}
     </p>
@@ -29,7 +29,7 @@ const sorted = articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
       {sorted.map((entry) => (
         <li>
           <a href={`/articles/${entry.id}`} class="block rounded-lg border border-border p-4 transition-colors hover:bg-muted/50" aria-label={entry.data.title}>
-            <ArticleHeader entry={entry} showDescription />
+            <ArticleHeader entry={entry} showDescription preview />
           </a>
         </li>
       ))}

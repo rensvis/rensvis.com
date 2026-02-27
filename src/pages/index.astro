@@ -14,7 +14,7 @@ const recent = sorted.filter((a) => !a.data.featured).slice(0, 5);
 <PageLayout title={SITE.name} description={SITE.description} structuredData={websiteSchema()}>
   <main class="container mx-auto max-w-2xl px-4 py-16">
     <section>
-      <h1 class="text-2xl font-bold">{SITE.name}</h1>
+      <h1>{SITE.name}</h1>
       <p class="mt-2 text-muted-foreground">{SITE.description}</p>
       <p class="mt-4 text-muted-foreground">Thoughts on Angular, Flutter, design systems, and frontend architecture.</p>
       <div class="mt-6 flex flex-wrap gap-4">
@@ -26,12 +26,12 @@ const recent = sorted.filter((a) => !a.data.featured).slice(0, 5);
 
     {featured.length > 0 && (
       <section class="mt-16">
-        <h2 class="text-xl font-semibold">Featured</h2>
+        <h2>Featured</h2>
         <ul class="mt-4 space-y-4">
           {featured.map((entry) => (
             <li>
               <a href={`/articles/${entry.id}`} class="block rounded-lg border border-border p-4 transition-colors hover:bg-muted/50" aria-label={entry.data.title}>
-                <ArticleHeader entry={entry} showDescription />
+                <ArticleHeader entry={entry} showDescription preview />
               </a>
             </li>
           ))}
@@ -40,12 +40,12 @@ const recent = sorted.filter((a) => !a.data.featured).slice(0, 5);
     )}
 
     <section class="mt-16">
-      <h2 class="text-xl font-semibold">Recent</h2>
+      <h2>Recent</h2>
       <ul class="mt-4 space-y-4">
         {recent.map((entry) => (
           <li>
             <a href={`/articles/${entry.id}`} class="block rounded-lg border border-border p-4 transition-colors hover:bg-muted/50" aria-label={entry.data.title}>
-              <ArticleHeader entry={entry} showDescription />
+              <ArticleHeader entry={entry} showDescription preview />
             </a>
           </li>
         ))}

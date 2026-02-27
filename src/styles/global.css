@@ -116,11 +116,37 @@
     --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* --- Typography: design system (source of truth) --- */
 @layer base {
   * {
     @apply border-border outline-ring/50;
     }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground text-base;
+    }
+  h1 {
+    @apply text-4xl md:text-5xl font-bold;
+    }
+  h2 {
+    @apply text-2xl md:text-3xl font-semibold;
+    }
+  h3 {
+    @apply text-xl font-semibold;
+    }
+  h4 {
+    @apply text-lg font-medium;
     }
 }
+
+/* Prose uses our type scale — typography plugin keeps spacing/rhythm only */
+.prose,
+.prose-sm,
+.prose-lg,
+.prose-xl,
+.prose-2xl {
+  font-size: 1rem;
+}
+.prose h1 { @apply text-4xl md:text-5xl font-bold; }
+.prose h2 { @apply text-2xl md:text-3xl font-semibold; }
+.prose h3 { @apply text-xl font-semibold; }
+.prose h4 { @apply text-lg font-medium; }
