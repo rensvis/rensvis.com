@@ -8,6 +8,6 @@ export const AUTHOR = {
   avatar: authorImage,
   links: {
     github: 'https://github.com/rensvis',
-    linkedin: 'https://linkedin.com/in/rensvis',
+    linkedin: 'https://www.linkedin.com/in/rens-vis-9218a9174/',
   },
 } as const;

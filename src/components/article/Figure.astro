@@ -2,6 +2,8 @@
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
+// TODO: When article images are added, consider widths/sizes for responsive optimization
+// (article container is max-w-2xl = 672px). E.g. widths={[400, 672, 800]}.
 interface Props {
   src: ImageMetadata | string;
   alt: string;

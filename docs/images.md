@@ -16,7 +16,7 @@ How we handle images for the author avatar, articles, and site assets.
 | Use case | Location | Component |
 | -------- | -------- | --------- |
 | Author avatar | `src/assets/author.webp` | `AuthorBlock` |
-| Article figures | `src/content/articles/<slug>/images/` or `src/assets/` | `Figure` |
+| Article figures | `src/content/articles/<slug>/images/` or `src/assets/` | `Figure` (not yet used) |
 
 Images must live under `src/` (not `public/`) to get Astro optimization. Import and pass to components.
 
@@ -50,7 +50,7 @@ npx sharp -i photo.jpg -o src/content/articles/my-article/images/hero.webp resiz
 
 ## Using Images in Code
 
-**Author avatar** — import in `src/lib/author.ts`:
+**Author avatar** — import in `src/lib/author.ts`. `AuthorBlock` uses `densities={[1, 2]}` for crisp rendering on retina displays.
 
 ```ts
 import authorImage from '@/assets/author.webp';
@@ -61,7 +61,7 @@ export const AUTHOR = {
 } as const;
 ```
 
-**Article figures** — import in MDX and pass to `Figure`:
+**Article figures** — import in MDX and pass to `Figure`. When adding article images, consider `widths` and `sizes` on `Figure` for responsive optimization (article container is max 672px).
 
 ```mdx
 ---
