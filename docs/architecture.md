@@ -12,9 +12,8 @@ Primary goals:
 
 Content focus areas:
 
-* Angular
-* Flutter
 * Design systems
+* Micro frontends
 * UX engineering
 * Frontend architecture
 * Developer workflows in large organizations

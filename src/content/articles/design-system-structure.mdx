@@ -1,0 +1,222 @@
+---
+title: "Atomic Design Is Not Your Architecture"
+description: "Why Atomic Design isn't enough for enterprise design systems — and how to structure components for governance, ownership, and long-term scale."
+date: 2025-03-06
+tags: [design-systems]
+featured: true
+---
+
+Most design systems don't fail because of bad components. They fail because of structure — not visual structure, but organizational structure. Ownership structure. Release structure.
+
+This article is about **component organization** in enterprise design systems, and why using Atomic Design as your folder structure is usually not the move.
+
+Let's get one thing out of the way: Atomic Design is not wrong. Composing larger components from smaller ones is simply good engineering. That idea holds. It's fundamental. We all do it.
+
+The real question is this:
+
+> Should Atomic Design determine how your enterprise design system is structured and governed?
+
+In my opinion, for many organizations the answer is no.
+
+**Contents**
+
+1. [Enterprise Context (The Part We Usually Skip)](#enterprise-context-the-part-we-usually-skip)
+2. [Structural Approaches](#structural-approaches)
+   - [Option 1: Atomic Design](#option-1-atomic-design)
+   - [Option 2: Base & Advanced](#option-2-base--advanced)
+   - [Option 3: Functional Layering](#option-3-functional-layering)
+   - [Option 4: Domain-Based Structure](#option-4-domain-based-structure)
+3. [How Deep Should Your Design System Go?](#how-deep-should-your-design-system-go)
+4. [Other Considerations](#other-considerations)
+   - [Versioning & Delivery](#versioning--delivery)
+   - [Design–Development Alignment](#designdevelopment-alignment)
+5. [So What Should You Do?](#so-what-should-you-do)
+
+---
+
+## Enterprise Context (The Part We Usually Skip)
+
+If you're building a design system in a serious environment, you probably have multiple product teams consuming it. UX and developers both contribute. A platform team acts as gatekeeper. Breaking changes are expensive. Release cycles are long. Layout is shared. Maybe pages are assembled in a CMS. Business domains like ecommerce or onboarding span multiple products.
+
+This is not a Dribbble exercise. It's governance, dependency direction, ownership boundaries, and long-term survivability.
+
+And yes, this discussion is framework-agnostic. React, Angular, Vue, Web Components — the structural problems are the same. Implementation details change. Organizational constraints do not.
+
+We'll assume one industry standard: you have a token layer. Systems like Material Design, Carbon, and Lightning Design System all start there. Good. So should you.
+
+The interesting decisions start above tokens.
+
+---
+
+## Structural Approaches
+
+There are several ways to organize components above the token layer. Each approach optimizes for different concerns — governance, stability, responsibility, or business alignment. Here are four common models and what they trade off.
+
+### Option 1: Atomic Design
+
+Brad Frost's model splits components by composition size: atoms, molecules, organisms, and templates.
+
+```
+components/
+├── atoms/
+│   ├── Button.tsx
+│   ├── Input.tsx
+│   └── Icon.tsx
+├── molecules/
+│   ├── SearchField.tsx
+│   └── FormField.tsx
+├── organisms/
+│   ├── Header.tsx
+│   └── ProductCard.tsx
+└── templates/
+    ├── PageLayout.tsx
+    └── DashboardTemplate.tsx
+```
+
+As a **mental model**, it's excellent. It teaches composition. It encourages reuse. It gives teams a shared vocabulary.
+
+That part is valuable.
+
+Where it starts to strain is when you try to use it as an operational governance model in a large organization. Atomic Design optimizes for conceptual clarity and visual hierarchy. It does not optimize for package boundaries, versioning strategy, ownership mapping, runtime responsibility, CMS integration, or cross-team governance.
+
+In enterprise systems, classification debates inevitably show up. Is this a molecule or an organism? Can an organism depend on another organism? Should templates contain logic? These discussions are rarely productive. They're usually a signal that the structure isn't aligned with responsibility.
+
+Atomic helps you think about composition. It does not help you decide who owns what, how it ships, or how it scales across ten teams.
+
+### Option 2: Base & Advanced
+
+A pragmatic split separates by **stability and opinionation**, not compositional size: base for primitives and tokens, advanced for composed, opinionated components.
+
+```
+packages/
+├── base/                    # Stable, rarely changes
+│   ├── tokens/
+│   ├── Button.tsx
+│   ├── Input.tsx
+│   ├── Typography.tsx
+│   └── layout-primitives/
+└── advanced/                # Evolves faster, opinionated
+    ├── SearchWithSuggestions.tsx
+    ├── ModalWithForm.tsx
+    └── DataTable.tsx
+```
+
+The Base layer contains tokens and primitives — your buttons, inputs, typography, layout primitives. It is intentionally boring. Breaking changes are rare and painful. This layer is consumed everywhere, so it needs to be predictable.
+
+The Advanced layer contains composed components, smart UI, and opinionated patterns. It evolves faster. It absorbs complexity so product teams don't all reinvent the same searchable data table with advanced filters for the tenth time.
+
+This model answers a different question: **what absolutely cannot break**?
+
+From a delivery standpoint, it maps cleanly to packaging. You can publish a stable base package and separate advanced packages with their own release cadence. If one layer needs flexibility, separate packages make sense. If one layer must be rock solid, keep it minimal.
+
+There are many packaging strategies, and none are inherently wrong. But one principle holds: **packaging strategy and structural model should reinforce each other.** If they fight each other, you'll feel it in your release process.
+
+### Option 3: Functional Layering
+
+Functional layering organizes by responsibility: tokens, primitives, smart components, layout, and content.
+
+```
+components/
+├── tokens/
+├── primitives/              # Purely visual
+├── smart/                   # Stateful, API-aware
+├── layout/                  # Shell, navigation, scaffolding
+├── content/                 # CMS-aware blocks
+└── ...
+```
+
+This is where design systems start behaving like architecture instead of taxonomy. Instead of asking how big a component is, you ask what responsibility it carries. You're modeling runtime behavior, not visual hierarchy.
+
+Some components are purely visual. Some are stateful. Some integrate with APIs. Some are tied to CMS schemas. Some define the structural skeleton of the entire application.
+
+Functional layering makes responsibility explicit. It maps cleanly to ownership boundaries, CODEOWNERS files, dependency rules, and governance. If a layout component breaks, that's different from a primitive changing padding. Atomic Design doesn't give you this lens. Functional layering does.
+
+When someone says "let's just make it configurable," clear responsibility boundaries are what you need — that's usually where complexity multiplies.
+
+### Option 4: Domain-Based Structure
+
+Domain-based structure groups by business capability: ecommerce, account, onboarding, search, and so on.
+
+```
+components/
+├── core/                    # Tokens, primitives, smart layer
+├── domains/
+│   ├── ecommerce/
+│   │   ├── ProductCard.tsx
+│   │   ├── CartDrawer.tsx
+│   │   └── CheckoutFlow.tsx
+│   ├── account/
+│   ├── onboarding/
+│   └── search/
+└── ...
+```
+
+This makes sense when multiple products share business capabilities and teams are aligned around those domains.
+
+If you operate several shops and share product cards, cart drawers, and checkout flows, centralizing that in a domain layer can prevent duplication and drift.
+
+But this raises a harder question: should domain-specific components live inside the design system, or should domain teams maintain their own libraries?
+
+Domain components belong in the design system when the capability is reused across products and governance is strong. They don't belong when the domain is product-specific and teams release independently.
+
+If every domain builds its own header, cart drawer, or product card, you get interaction inconsistency — the same pattern behaves differently across products — and accessibility fragmentation. Everything will look "almost consistent," which is usually worse than clearly different.
+
+Domain-based structure optimizes for business alignment. It does not remove the need for a strong core or smart layer. It builds on top of them.
+
+---
+
+## How Deep Should Your Design System Go?
+
+Structure is one decision. Depth is another.
+
+**Stop at primitives and you will get duplication.** Go deeper and you must have governance. There is no neutral choice.
+
+You can stop at tokens and core primitives. That gives teams flexibility. It also guarantees duplication — and the UX drift that comes with it. Designers reuse patterns in Figma. Developers reimplement them per product. The gap between design and code grows with every new screen. Shared headers get built ten times, each slightly different.
+
+"This looked great in Figma." It did not survive implementation.
+
+If you don't provide deeper layers, teams will build them anyway — just in parallel.
+
+Adding an advanced or smart layer centralizes complex interaction patterns and stateful components. This reduces duplication and inconsistency — but governance is non-negotiable. Ten teams pushing smart components without architectural oversight is not a system. It's a queue.
+
+Adding layout or shell components makes sense when you operate a platform rather than a collection of unrelated apps. Shared navigation and structural scaffolding belong somewhere.
+
+If CMS-driven composition is part of your strategy, content blocks become infrastructure. You're now aligning UI components with content schemas and layout constraints. That's no longer just a UI library. It's part of your platform.
+
+The deeper you go, the more coordination you need. But the less time you'll waste rebuilding the same thing five different ways.
+
+---
+
+## Other Considerations
+
+### Versioning & Delivery
+
+There are many ways to package a design system: a single package, layer-based packages, stable core plus flexible advanced packages, domain-specific packages. None are universally correct. What matters is alignment between structure, ownership, and release cadence.
+
+If your advanced layer needs rapid iteration, separate it. If your base layer must not break, keep it small and stable. If domain layers are owned by specific teams, align package boundaries with that ownership. When structural layers map cleanly to release boundaries, governance becomes manageable. When they don't, release management slowly turns into archaeology.
+
+### Design–Development Alignment
+
+Your structure must make sense to both developers and designers. If design works in patterns but your codebase is structured around atoms, someone is constantly translating. Translation adds friction. Over time, friction becomes divergence.
+
+A strong system ensures that Figma structure maps to implementation layers, Storybook mirrors the design library, and naming conventions are aligned. If that alignment is missing, the design system becomes messy documentation instead of a scalable platform.
+
+---
+
+## So What Should You Do?
+
+Each structural model optimizes for something different. Atomic provides conceptual clarity. Base & Advanced separates stability from evolution. Functional layering models architectural responsibility. Domain-based structure aligns with business capability.
+
+In most enterprise environments, the scalable approach is a combination. Use functional layering as the backbone. Apply a Base & Advanced split to manage stability. Introduce domain layers where business capabilities are shared across products. Keep Atomic as shared language — not folder law.
+
+Atomic Design makes sense as a principle. It just isn't enough as an architecture.
+
+Enterprise design systems are not about taxonomy purity. They are about ownership, governance, versioning, collaboration, and long-term survivability.
+
+Most design systems don't collapse because the button is wrong. They collapse because no one agreed on who owns the button — or how it ships.
+
+Structure is not taxonomy.
+
+Structure is power distribution.
+
+Design it accordingly.

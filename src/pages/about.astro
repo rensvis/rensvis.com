@@ -1,30 +1,50 @@
 ---
-import PageLayout from '../layouts/PageLayout.astro';
-import AuthorBlock from '../components/article/AuthorBlock.astro';
-import { SITE } from '../lib/site';
-import { AUTHOR } from '../lib/author';
+import AuthorBlock from "../components/article/AuthorBlock.astro";
+import PageLayout from "../layouts/PageLayout.astro";
+import { SITE } from "../lib/site";
 ---
 
 <PageLayout title={`About | ${SITE.name}`} description={SITE.description}>
   <main class="container mx-auto max-w-2xl px-4 py-16">
     <h1>About</h1>
-    <p class="mt-4 text-muted-foreground">
-      I'm a senior frontend engineer focused on design systems, component architecture, and developer experience.
-    </p>
-    <div class="mt-8">
+    <div class="mt-6 space-y-6 text-muted-foreground">
+      <p>I'm a senior frontend engineer from the Netherlands.</p>
+      <p>
+        I work at the intersection of frontend architecture, micro frontends,
+        and UX. Most of my time is spent thinking about structure — how systems
+        scale, how teams collaborate, and why things that look clean in Figma
+        tend to get messy in production.
+      </p>
+      <p>I care less about frameworks and more about foundations:</p>
+      <ul class="list-disc space-y-2 pl-6">
+        <li>How do you structure a design system so it survives five teams?</li>
+        <li>
+          How do you prevent micro frontends from turning into micro chaos?
+        </li>
+        <li>
+          How do you align UX and engineering so components mean the same thing
+          to both?
+        </li>
+      </ul>
+      <p>
+        I've worked on enterprise platforms where governance matters, where
+        ownership is unclear, and where "just make it configurable" slowly
+        becomes a liability. That's the reality this site is built around.
+      </p>
+      <p>
+        <strong class="text-foreground">Rensvis.com</strong> is my public notebook.<br
+        />
+        Clear thinking. Architectural trade-offs. The messy parts included.
+      </p>
+      <p>
+        Outside of tech, I used to work as a dive instructor in Australia —
+        which turns out to be excellent training for staying calm when systems
+        are under pressure. I ski, snowboard, and have a long-term plan to
+        combine serious engineering work with van life.
+      </p>
+    </div>
+    <div class="mt-12">
       <AuthorBlock />
     </div>
-    {AUTHOR.expertise && AUTHOR.expertise.length > 0 && (
-      <section class="mt-8">
-        <h2>Focus areas</h2>
-        <ul class="mt-2 flex flex-wrap gap-2">
-          {AUTHOR.expertise.map((area) => (
-            <li>
-              <span class="rounded-full bg-muted px-3 py-1 text-sm">{area}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-    )}
   </main>
 </PageLayout>

@@ -7,7 +7,7 @@ export async function GET(context) {
 
   return rss({
     title: 'Rens Vis',
-    description: 'Senior Frontend Engineer — Angular, Flutter, design systems, frontend architecture',
+    description: 'Senior Frontend Engineer — design systems, micro frontends, frontend architecture, UX',
     site: context.site,
     items: sorted.map((entry) => ({
       title: entry.data.title,
