@@ -79,7 +79,7 @@ That part is valuable.
 
 Where it starts to strain is when you try to use it as an operational governance model in a large organization. Atomic Design optimizes for conceptual clarity and visual hierarchy. It does not optimize for package boundaries, versioning strategy, ownership mapping, runtime responsibility, CMS integration, or cross-team governance.
 
-In enterprise systems, classification debates inevitably show up. Is this a molecule or an organism? Can an organism depend on another organism? Should templates contain logic? These discussions are rarely productive. They're usually a signal that the structure isn't aligned with responsibility.
+In enterprise systems, classification debates inevitably show up. What classifies as an atom? Is this a molecule or an organism? Can an organism depend on another organism? Should templates contain logic? These discussions are rarely productive. They're usually a signal that the structure isn't aligned with responsibility.
 
 Atomic helps you think about composition. It does not help you decide who owns what, how it ships, or how it scales across ten teams.
 
@@ -94,11 +94,17 @@ packages/
 │   ├── Button.tsx
 │   ├── Input.tsx
 │   ├── Typography.tsx
+│   ├── Icon.tsx
 │   └── layout-primitives/
+│       ├── Flex.tsx
+│       ├── Grid.tsx
+│       └── Stack.tsx
 └── advanced/                # Evolves faster, opinionated
     ├── SearchWithSuggestions.tsx
+    ├── FormField.tsx
     ├── ModalWithForm.tsx
-    └── DataTable.tsx
+    ├── DataTable.tsx
+    └── ProductCard.tsx
 ```
 
 The Base layer contains tokens and primitives — your buttons, inputs, typography, layout primitives. It is intentionally boring. Breaking changes are rare and painful. This layer is consumed everywhere, so it needs to be predictable.
@@ -113,16 +119,32 @@ There are many packaging strategies, and none are inherently wrong. But one prin
 
 ### Option 3: Functional Layering
 
-Functional layering organizes by responsibility: tokens, primitives, smart components, layout, and content.
+Functional layering organizes by responsibility. The **core** layer mirrors Base & Advanced's base — tokens and primitives. Above that: **smart** for stateful components, **layout** for shell and scaffolding, **content** for CMS-aware blocks.
 
 ```
 components/
-├── tokens/
-├── primitives/              # Purely visual
+├── core/                    # Tokens, primitives
+│   ├── tokens/
+│   ├── Button.tsx
+│   ├── Input.tsx
+│   ├── Typography.tsx
+│   ├── Icon.tsx
+│   └── layout-primitives/
+│       ├── Flex.tsx
+│       └── Stack.tsx
 ├── smart/                   # Stateful, API-aware
+│   ├── SearchWithSuggestions.tsx
+│   ├── DataTable.tsx
+│   └── ModalWithForm.tsx
 ├── layout/                  # Shell, navigation, scaffolding
-├── content/                 # CMS-aware blocks
-└── ...
+│   ├── Shell.tsx
+│   ├── Nav.tsx
+│   ├── Sidebar.tsx
+│   └── PageLayout.tsx
+└── content/                 # CMS-aware blocks
+    ├── HeroBlock.tsx
+    ├── CardGrid.tsx
+    └── FeatureList.tsx
 ```
 
 This is where design systems start behaving like architecture instead of taxonomy. Instead of asking how big a component is, you ask what responsibility it carries. You're modeling runtime behavior, not visual hierarchy.
@@ -140,14 +162,25 @@ Domain-based structure groups by business capability: ecommerce, account, onboar
 ```
 components/
 ├── core/                    # Tokens, primitives, smart layer
+│   ├── tokens/
+│   ├── Button.tsx
+│   ├── Input.tsx
+│   ├── DataTable.tsx
+│   └── layout-primitives/
 ├── domains/
 │   ├── ecommerce/
 │   │   ├── ProductCard.tsx
 │   │   ├── CartDrawer.tsx
 │   │   └── CheckoutFlow.tsx
 │   ├── account/
+│   │   ├── ProfileForm.tsx
+│   │   └── AccountNav.tsx
 │   ├── onboarding/
+│   │   ├── StepIndicator.tsx
+│   │   └── OnboardingWizard.tsx
 │   └── search/
+│       ├── SearchBar.tsx
+│       └── SearchResults.tsx
 └── ...
 ```
 
@@ -209,14 +242,10 @@ Each structural model optimizes for something different. Atomic provides concept
 
 In most enterprise environments, the scalable approach is a combination. Use functional layering as the backbone. Apply a Base & Advanced split to manage stability. Introduce domain layers where business capabilities are shared across products. Keep Atomic as shared language — not folder law.
 
-Atomic Design makes sense as a principle. It just isn't enough as an architecture.
-
-Enterprise design systems are not about taxonomy purity. They are about ownership, governance, versioning, collaboration, and long-term survivability.
+Enterprise design systems are not about taxonomy purity. They are about **ownership**, **governance**, **versioning**, **collaboration**, and **long-term survivability**.
 
 Most design systems don't collapse because the button is wrong. They collapse because no one agreed on who owns the button — or how it ships.
 
-Structure is not taxonomy.
+Structure is not taxonomy. Structure is power distribution.
 
-Structure is power distribution.
-
-Design it accordingly.
+Let's design it accordingly.

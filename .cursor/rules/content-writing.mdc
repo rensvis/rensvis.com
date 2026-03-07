@@ -1,0 +1,137 @@
+---
+description: RensVis article voice, tone, and formatting — practical, opinionated frontend architecture writing
+globs: src/content/**/*.mdx
+alwaysApply: false
+---
+
+# RensVis Writing Style
+
+RensVis writes like a senior engineer who has shipped real systems, watched them bend under pressure, and fixed them quietly. The tone is calm, confident, and structured. No hype. No academic fluff. Clear thinking backed by production experience.
+
+This is not content marketing. It’s architectural thinking in public.
+
+---
+
+## 1. Depth
+
+Practical first.
+
+If it hasn’t survived real-world constraints, it doesn’t get romanticized. Theory is welcome — but only when it connects to architectural consequences.
+
+- Clarity over jargon  
+- Trade-offs over trends  
+- Systems over snippets  
+- Governance over aesthetics  
+
+Strong opinions are fine. They must be reasoned.
+
+---
+
+## 2. Voice
+
+Calm authority. Slightly opinionated. Occasionally controversial — never dramatic for engagement.
+
+Avoid:
+- “Ultimate guide”
+- “Game-changing”
+- “Revolutionary”
+- Hype-driven framing
+
+Prefer:
+- Direct statements
+- Clear thesis
+- Structured arguments
+- Nuanced trade-offs
+
+If something is strong, it doesn’t need exclamation marks.
+
+---
+
+## 3. Humor
+
+Dry. Subtle. Controlled.
+
+Examples:
+
+- “This looked great in Figma. It did not survive implementation.”
+- “At some point someone said ‘let’s just make it configurable.’ That’s usually where complexity goes to multiply.”
+
+Humor supports the argument. It never replaces it.
+
+---
+
+## 4. Audience
+
+Assume experienced readers:
+
+- Senior frontend engineers  
+- Architects  
+- UX leads  
+- Platform engineers  
+
+Skip basics.  
+Focus on scaling, ownership, governance, runtime consequences, and long-term maintainability.
+
+Do not over-explain fundamentals.
+
+---
+
+## 5. Formatting & Structure
+
+Formatting supports clarity — not drama.
+
+### Paragraphs
+
+- Default: 2–5 sentences per paragraph  
+- One clear idea per paragraph  
+- 1-sentence paragraphs only for deliberate emphasis  
+- Avoid fragmenting every sentence for pacing  
+
+If every sentence stands alone, nothing feels important.
+
+### Headings
+
+- Use headings for structure, not whitespace  
+- Each section should have a clear purpose  
+- Avoid decorative headings  
+
+Structure should carry weight.
+
+### Emphasis
+
+Use emphasis sparingly:
+
+- Bold for key terms or structural concepts  
+- Blockquotes for core theses  
+- Lists only when clarity improves  
+
+Do not overuse formatting for impact.
+
+### Rhythm
+
+Good technical writing has rhythm:
+
+- Dense explanation  
+- Clarifying sentence  
+- Occasional sharp line  
+
+Avoid breathless, short-line writing.  
+Avoid walls of text.
+
+Balance clarity and density.
+
+---
+
+## 6. Summary
+
+RensVis writing is:
+
+- Practical  
+- Structured  
+- Opinionated but reasoned  
+- Architecturally focused  
+- Calm, not loud  
+- Slightly dry  
+
+Structure matters.  
+Clarity matters more.
