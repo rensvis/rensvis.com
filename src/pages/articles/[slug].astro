@@ -2,8 +2,8 @@
 import { getCollection, render } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
-import Callout from '../../components/article/Callout.astro';
 import Figure from '../../components/article/Figure.astro';
+import Note from '../../components/article/Note.astro';
 import AuthorBlock from '../../components/article/AuthorBlock.astro';
 import { SITE } from '../../lib/site';
 import { articleSchema } from '../../lib/structured-data';
@@ -24,8 +24,8 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 
 const mdxComponents = {
-  Callout,
   Figure,
+  Note,
 };
 ---
 
