@@ -7,9 +7,9 @@ tags: [angular, web-components, design-systems]
 featured: false
 ---
 
-If you're an Angular developer and you've used web components before, you've probably wrapped them in an Angular component. It's an established pattern and by now the standard approach. 
+The standard approach to web components in Angular is wrapping them. It's established. It works. But it's not the only option — and the wrapper can add friction you didn't sign up for.
 
-Let's explore an alternative: a directive-based adapter.
+A directive-based adapter is the alternative most teams never consider.
 
 
 
@@ -38,7 +38,7 @@ When we use a web component, we're using a custom element. Angular doesn't know 
 schemas: [CUSTOM_ELEMENTS_SCHEMA]
 ```
 
-Great, now the compiler stops complaining. The problem however is that it stops checking our actual angular components too. This means that we can introduce bugs in our angular components that the compiler doesn't catch.
+Great, now the compiler stops complaining. It also stops checking — which means you can introduce bugs in your Angular components that it won't catch.
 
 The fix is to contain the schema to the smallest possible scope. This can be done by wrapping the web component in an Angular component. 
 
@@ -129,15 +129,13 @@ With wrapper components however, each wrapper renders a host element. The DOM be
 
 This means that the `ds-tabs` component will find nested `ui-tab` and `ui-tab-panel` children instead of the `ds-tab` and `ds-tab-panel` children. Slot querying breaks, and the internal state coordination fails.
 
-You either have to move the elements in the dom with portals (works, but complex), or you have to reshape the API so the wrapper takes an array and creates the elements itself. Either way, you're adding more complexity and documentation to the component.
+You either move elements with portals or reshape the API so the wrapper takes an array and creates the elements itself. Either way, the complexity budget goes up.
 
 ### Drawback 3: API Drift
 
 With components you have full control over the API. You can reshape and patch, which is handy. 
 
-The flip side: it can **hide problems** instead of resolving them. Wrappers let you work around weaknesses in the design system, so the pressure to fix things at the source can fade. 
-
-Over time, the Angular API and the web component API can drift apart. Multiple apps with their own wrappers might diverge in different directions. 
+The flip side: it can **hide problems** instead of resolving them. Wrappers let you work around weaknesses in the design system, so the pressure to fix things at the source fades. Over time, the Angular API and the web component API drift apart. Multiple apps with their own wrappers diverge in different directions. 
 
 ## Alternative: Directive-Based Adapter
 
@@ -184,12 +182,12 @@ That's it. We use the web component directly as intended, and the Angular compil
 
 ## Which One Should You Use?
 
-In my view, there are a few things worth considering when choosing between wrapper components and directives.
+A few things matter when choosing between wrapper components and directives.
 
 ### API Purity vs API Control
 
 - **Wrappers** — You control the public Angular API. You can reshape child composition into inputs, compensate for inconsistencies, and shape the consumer experience however you like. You decide what the API looks like.
-- **Directives** — The web component API is exposed directly. No reshaping, no compensation. If the API is awkward, consumers feel it — and so does the design system team. That can be a good thing if you're able to improve the design system; it can also be painful if you're not. A clear prefix (`ds-`) tells devs they're binding to a web component. Custom events, attribute vs property binding — platform behavior, not typical Angular. Worth considering if your team is comfortable with that.
+- **Directives** — The web component API is exposed directly. No reshaping, no compensation. If the API is awkward, consumers feel it — and so does the design system team. That can be a good thing if you can improve the design system; it can also be painful if you can't. A clear prefix (`ds-`) tells devs they're binding to a web component. Custom events, attribute vs property binding — platform behavior, not typical Angular.
 
 ### Design System Governance
 
@@ -200,7 +198,7 @@ Wrappers give you a buffer when the design system is opaque, slow to change, or 
 - **Wrappers** — Quick fixes tend to accumulate in the Angular layer. Multiple wrappers across apps can diverge over time. The design system and its Angular interpretation can slowly drift apart. The debt lives in the integration layer.
 - **Directives** — The pressure stays in the design system. Weak APIs hurt immediately, which can motivate improvements at the source — or it can mean you're stuck with a design system you can't change.
 
-Neither approach magically avoids debt. It just lands in different places. The directive approach could have the added benefit of forcing the design system team to improve the API.
+Debt doesn't disappear. It just lands in different places. The directive approach has one upside: it pushes the design system team to improve the API, because weak APIs hurt immediately.
 
 ### Control & Orchestration
 
@@ -231,7 +229,7 @@ If you go the orchestration route, keep the Angular layer minimal — avoid bloa
 ### Testing Considerations
 
 - **Wrappers** — Easy to mock. Clean Angular unit tests. More isolation. You're testing the wrapper, not the element. The tradeoff: you're relying on the web component being stable. If the design system changes, your tests might still pass while the rendered output drifts. You're trusting the wrapper's contract, not the element's actual behavior.
-- **Directives** — You test against the real element. It's closer to integration testing — less 'fake' abstraction. The compiler and runtime stay aligned. Changes to the web component show up in tests right away. Not a deciding factor on its own, but worth thinking about when test strategy and maintenance matter.
+- **Directives** — You test against the real element. It's closer to integration testing — less fake abstraction. The compiler and runtime stay aligned. Changes to the web component show up in tests right away.
 
 ## Which should you use?
 
@@ -241,6 +239,6 @@ Both approaches are valid. The choice is architectural, not stylistic.
 
 **Directives help enforce purity** — the component is used the way it was designed to be used. The API is the API. No translation, no reshaping. What you see in the template is what runs in the DOM.
 
-Which one fits depends on your context. If you need orchestration, or you're consuming a design system you can't change, wrappers might be the better fit. If you own or influence the design system, directives can work well — they keep the API honest and push responsibility to the source. There's no universal answer.
+Which one fits depends on your context. If you need orchestration, or you're consuming a design system you can't change, wrappers are the better fit. If you own or influence the design system, directives work well — they keep the API honest and push responsibility to the source.
 
 In both cases, when the source is strong, the integration layer can stay thin. That's usually a sign of a healthy system — whichever approach you choose.
