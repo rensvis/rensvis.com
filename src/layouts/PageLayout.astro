@@ -36,6 +36,8 @@ const { title, description, canonical, image, structuredData, loadPagefind } = A
         const d=window.matchMedia('(prefers-color-scheme: dark)').matches;
         const isDark=s==='dark'||(s==='system'&&d);
         document.documentElement.classList.toggle('dark',isDark);
+        const m=document.querySelector('meta[name="theme-color"]');
+        if(m)m.content=isDark?'#252525':'#ffffff';
         if(/Mac|iPhone|iPod|iPad/i.test(navigator.userAgent))
           document.documentElement.classList.add('platform-mac');
       })();

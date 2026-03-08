@@ -32,6 +32,8 @@ function getEffectiveTheme(mode: ThemeMode): typeof LIGHT | typeof DARK {
 
 function applyTheme(isDark: boolean) {
   document.documentElement.classList.toggle(DARK, isDark);
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', isDark ? '#252525' : '#ffffff');
 }
 
 export function ThemeToggle() {
