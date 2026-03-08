@@ -120,6 +120,16 @@ Avoid walls of text.
 
 Balance clarity and density.
 
+### Article Structure
+
+**Opening** — Thesis-first, declarative. Lead with the core argument, not a conditional setup. "Most X don't fail because of Y. They fail because of Z."
+
+**Closing** — Strong, memorable, aphoristic. End with a line that carries weight. Avoid soft, balanced summaries when a sharp conclusion fits.
+
+**Table of contents** — Use nested bullets for subheadings under each main section. Number main sections; indent subsections with bullets. No horizontal divider between the TOC and the first section.
+
+**Dividers** — No horizontal rules (`---`) in the article body. Structure comes from headings, not visual separators.
+
 ---
 
 ## 6. Summary

@@ -18,11 +18,17 @@ Let's explore an alternative: a directive-based adapter.
 
 1. [Why We Use Wrapper Components](#why-we-use-wrapper-components)
 2. [Hidden Drawbacks](#hidden-drawbacks)
+   - [Drawback 1: Styling Friction](#drawback-1-styling-friction)
+   - [Drawback 2: Slot-based Composition Can Break](#drawback-2-slot-based-composition-can-break)
+   - [Drawback 3: API Drift](#drawback-3-api-drift)
 3. [Alternative: Directive-Based Adapter](#alternative-directive-based-adapter)
+   - [What You Gain](#what-you-gain)
 4. [Which One Should You Use?](#which-one-should-you-use)
-5. [Which should you use?](#which-should-you-use)
-
----
+   - [API Purity vs API Control](#api-purity-vs-api-control)
+   - [Design System Governance](#design-system-governance)
+   - [Tech Debt: Where Does It Accumulate?](#tech-debt-where-does-it-accumulate)
+   - [Control & Orchestration](#control--orchestration)
+   - [Testing Considerations](#testing-considerations)
 
 ## Why We Use Wrapper Components
 
@@ -231,7 +237,7 @@ If you go the orchestration route, keep the Angular layer minimal — avoid bloa
 
 Both approaches are valid. The choice is architectural, not stylistic.
 
-**Wrappers allow give you control and flexibility** — the component is used the way you want to use it. You can reshape, patch, and orchestrate. You can give consumers an Angular-idiomatic experience even when the underlying design system isn't.
+**Wrappers give you control and flexibility** — the component is used the way you want to use it. You can reshape, patch, and orchestrate. You can give consumers an Angular-idiomatic experience even when the underlying design system isn't.
 
 **Directives help enforce purity** — the component is used the way it was designed to be used. The API is the API. No translation, no reshaping. What you see in the template is what runs in the DOM.
 
