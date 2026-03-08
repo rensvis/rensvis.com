@@ -1,0 +1,240 @@
+---
+
+title: "Wrapping Web Components in Angular? Consider a Directive Instead"
+description: "API purity, architectural control, and when abstraction actually adds debt — a practical look at wrapper components vs directive-based adapters for Web Components in Angular."
+date: 2026-03-08
+tags: [angular, web-components, design-systems]
+featured: false
+---
+
+If you're an Angular developer and you've used web components before, you've probably wrapped them in an Angular component. It's an established pattern and by now the standard approach. 
+
+Let's explore an alternative: a directive-based adapter.
+
+
+
+
+**Contents**
+
+1. [Why We Use Wrapper Components](#why-we-use-wrapper-components)
+2. [Hidden Drawbacks](#hidden-drawbacks)
+3. [Alternative: Directive-Based Adapter](#alternative-directive-based-adapter)
+4. [Which One Should You Use?](#which-one-should-you-use)
+5. [Which should you use?](#which-should-you-use)
+
+---
+
+## Why We Use Wrapper Components
+
+When we use a web component, we're using a custom element. Angular doesn't know about it, so it gives us compilation errors. To fix this, we need to add this schema:
+
+```ts
+schemas: [CUSTOM_ELEMENTS_SCHEMA]
+```
+
+Great, now the compiler stops complaining. The problem however is that it stops checking our actual angular components too. This means that we can introduce bugs in our angular components that the compiler doesn't catch.
+
+The fix is to contain the schema to the smallest possible scope. This can be done by wrapping the web component in an Angular component. 
+
+```ts
+// ui-tag.component.ts
+import { CUSTOM_ELEMENTS_SCHEMA, Component, input, output } from '@angular/core';
+
+@Component({
+  selector: 'ui-tag',
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA], // Only applies in the ui-tag component
+  template: `
+    <ds-tag
+      [label]="label()"
+      [isDisabled]="isDisabled()"
+      (click)="handleClick($event)"
+    ></ds-tag>
+  `,
+})
+export class UiTagComponent {
+  label = input.required<string>();
+  isDisabled = input<boolean>(false);
+  click = output<Event>();
+
+  handleClick(event: Event) {
+    this.click.emit(event);
+  }
+}
+```
+
+And then we can use it in our template like this:
+
+```html
+<ui-tag label="My tag" [isDisabled]="disabled" (click)="handleClick($event)" />
+```
+
+Angular defines the public API. The web component sits underneath and does what it's told.
+
+## Hidden Drawbacks
+
+### Drawback 1: Styling Friction
+
+Every wrapper adds a host element:
+
+```html
+<ui-tag>
+  <ds-tag></ds-tag>
+</ui-tag>
+```
+
+Say you want to use a utility class to style the `ds-tag` component. Classes attach to `ui-tag`, not `ds-tag`, as we don't have access to the `ds-tag` element from the consumer's perspective.
+
+What was meant to behave like a button ends up feeling more like a container that happens to render a button. Styling isn't quite as transparent anymore, and now we need additional logic to forward the classes to the web component.
+
+### Drawback 2: Slot-based Composition Can Break
+
+For example, think of a `ds-tabs` tabs component which works in conjunction with `ds-tab` and `ds-tab-panel` for showing the tab and tab panel content.
+
+```html
+<ds-tabs>
+  <ds-tab slot="nav" label="Overview"></ds-tab>
+  <ds-tab slot="nav" label="Settings"></ds-tab>
+  <ds-tab-panel slot="panel" label="Content for tab 1"></ds-tab-panel>
+  <ds-tab-panel slot="panel" label="Content for tab 2"></ds-tab-panel>
+</ds-tabs>
+```
+
+The web component uses `querySelector('slot[name=nav]')` or similar to find its tabs and panels, then manages its internal state and coordinates which panel is visible.
+
+With wrapper components however, each wrapper renders a host element. The DOM becomes:
+
+```html
+<ds-tabs>
+  <ui-tab>          
+    <ds-tab slot="nav"></ds-tab> <!-- now hidden because it's inside a wrapper -->
+  </ui-tab>
+  <ui-tab>
+    <ds-tab slot="nav"></ds-tab> <!-- now hidden because it's inside a wrapper -->
+  </ui-tab>
+  <ui-tab-panel>   
+    <ds-tab-panel slot="panel"></ds-tab-panel> <!-- now hidden because it's inside a wrapper -->
+  </ui-tab-panel>
+  <ui-tab-panel>
+    <ds-tab-panel slot="panel"></ds-tab-panel> <!-- now hidden because it's inside a wrapper -->
+  </ui-tab-panel>
+</ds-tabs>
+```
+
+This means that the `ds-tabs` component will find nested `ui-tab` and `ui-tab-panel` children instead of the `ds-tab` and `ds-tab-panel` children. Slot querying breaks, and the internal state coordination fails.
+
+You either have to move the elements in the dom with portals (works, but complex), or you have to reshape the API so the wrapper takes an array and creates the elements itself. Either way, you're adding more complexity and documentation to the component.
+
+### Drawback 3: API Drift
+
+With components you have full control over the API. You can reshape and patch, which is handy. 
+
+The flip side: it can **hide problems** instead of resolving them. Wrappers let you work around weaknesses in the design system, so the pressure to fix things at the source can fade. 
+
+Over time, the Angular API and the web component API can drift apart. Multiple apps with their own wrappers might diverge in different directions. 
+
+## Alternative: Directive-Based Adapter
+
+A way around the constraints of the wrapper: use the web component directly and attach a directive for Angular integration. No extra wrapper element. No API reshaping. We make Angular understand the element — we don't replace it.
+
+The directive uses the same selector as the element, so it applies automatically when you use `ds-button`. It maps Angular inputs to attributes and forwards events as outputs. 
+
+```ts
+// ui-button.directive.ts
+@Directive({
+  selector: 'ds-button',
+  standalone: true,
+  host: {
+    '[attr.variant]': 'variant()',
+    '(buttonClicked)': 'handleClick($event)',
+  },
+})
+export class UiButtonDirective {
+  readonly variant = input<'primary' | 'secondary'>('primary');
+  readonly buttonClicked = output<Event>();
+
+  handleClick(event: Event): void {
+    this.buttonClicked.emit(event);
+  }
+}
+```
+
+And then we can use it in our template like this:
+
+```html
+<ds-button [variant]="'primary'" (buttonClicked)="onClick()"></ds-button>
+```
+
+That's it. We use the web component directly as intended, and the Angular compiler understands it.
+
+### What You Gain
+
+- **No extra DOM** — The element in the template is the element in the DOM. Layout, flex, grid, and positioning behave as the design system intended.
+- **Styling works as expected** — Utility classes attach directly to the real element. No forwarding. No host display correction. `class="mt-4 w-full"` lands where it should.
+- **Slot-based querying works** — The web component receives its children directly. No wrapper host in between. `ds-tabs` finds `ds-tab` and `ds-tab-panel`. Composition and internal state coordination behave correctly.
+- **Clear signal** — The template shows `ds-button`. Consumers know they're using a web component from the design system. No hidden abstraction to wonder about.
+- **No translation layer** — The web component API is the API. Consumers learn it once and apply it consistently.
+- **Compiler stays useful** — By declaring a directive with the same selector as the element (`ds-button`), Angular recognizes the tag. You can avoid broad `CUSTOM_ELEMENTS_SCHEMA` suppression. Missing imports still fail. The compiler keeps doing its job.
+
+## Which One Should You Use?
+
+In my view, there are a few things worth considering when choosing between wrapper components and directives.
+
+### API Purity vs API Control
+
+- **Wrappers** — You control the public Angular API. You can reshape child composition into inputs, compensate for inconsistencies, and shape the consumer experience however you like. You decide what the API looks like.
+- **Directives** — The web component API is exposed directly. No reshaping, no compensation. If the API is awkward, consumers feel it — and so does the design system team. That can be a good thing if you're able to improve the design system; it can also be painful if you're not. A clear prefix (`ds-`) tells devs they're binding to a web component. Custom events, attribute vs property binding — platform behavior, not typical Angular. Worth considering if your team is comfortable with that.
+
+### Design System Governance
+
+Wrappers give you a buffer when the design system is opaque, slow to change, or inconsistent. Directives work best when the quality is high or when your team can influence it.
+
+### Tech Debt: Where Does It Accumulate?
+
+- **Wrappers** — Quick fixes tend to accumulate in the Angular layer. Multiple wrappers across apps can diverge over time. The design system and its Angular interpretation can slowly drift apart. The debt lives in the integration layer.
+- **Directives** — The pressure stays in the design system. Weak APIs hurt immediately, which can motivate improvements at the source — or it can mean you're stuck with a design system you can't change.
+
+Neither approach magically avoids debt. It just lands in different places. The directive approach could have the added benefit of forcing the design system team to improve the API.
+
+### Control & Orchestration
+
+Sometimes orchestration is worth it. Complex composition patterns — tabs, steppers, slot-heavy structures. Transforming child elements into structured Angular inputs. State coordination across multiple components. In those cases, wrappers can add real value.
+
+```html
+<!-- Wrapper-based: reshape the API with a typed array -->
+<ui-tabs [tabs]="[
+  { label: 'Overview', content: 'Content for tab 1' },
+  { label: 'Settings', content: 'Content for tab 2' }
+]" />
+
+<!-- Directive-based: use the web component as designed -->
+<ds-tabs>
+  <ds-tab label="Overview"></ds-tab>
+  <ds-tab label="Settings"></ds-tab>
+  <ds-tab-panel>Content for tab 1</ds-tab-panel>
+  <ds-tab-panel>Content for tab 2</ds-tab-panel>
+</ds-tabs>
+```
+
+**Wrapper-based** — Consumers get a cleaner, Angular-idiomatic API. The tradeoff: you own the orchestration logic. The wrapper has to stay in sync with the web component. More code, more surface area.
+
+**Directive-based** — Structure matches what the design system expects. Slot querying works. No translation layer. Consumers work with the web component's composition model; if it feels awkward, they'll feel it.
+
+If you go the orchestration route, keep the Angular layer minimal — avoid bloated wrappers, dual logic, or parallel abstractions that drift over time.
+
+### Testing Considerations
+
+- **Wrappers** — Easy to mock. Clean Angular unit tests. More isolation. You're testing the wrapper, not the element. The tradeoff: you're relying on the web component being stable. If the design system changes, your tests might still pass while the rendered output drifts. You're trusting the wrapper's contract, not the element's actual behavior.
+- **Directives** — You test against the real element. It's closer to integration testing — less 'fake' abstraction. The compiler and runtime stay aligned. Changes to the web component show up in tests right away. Not a deciding factor on its own, but worth thinking about when test strategy and maintenance matter.
+
+## Which should you use?
+
+Both approaches are valid. The choice is architectural, not stylistic.
+
+**Wrappers allow give you control and flexibility** — the component is used the way you want to use it. You can reshape, patch, and orchestrate. You can give consumers an Angular-idiomatic experience even when the underlying design system isn't.
+
+**Directives help enforce purity** — the component is used the way it was designed to be used. The API is the API. No translation, no reshaping. What you see in the template is what runs in the DOM.
+
+Which one fits depends on your context. If you need orchestration, or you're consuming a design system you can't change, wrappers might be the better fit. If you own or influence the design system, directives can work well — they keep the API honest and push responsibility to the source. There's no universal answer.
+
+In both cases, when the source is strong, the integration layer can stay thin. That's usually a sign of a healthy system — whichever approach you choose.
