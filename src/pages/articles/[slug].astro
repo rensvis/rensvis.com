@@ -1,10 +1,12 @@
 ---
+import React from 'react';
 import { getCollection, render } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import Figure from '../../components/article/Figure.astro';
 import Note from '../../components/article/Note.astro';
 import AuthorBlock from '../../components/article/AuthorBlock.astro';
+import { TableOfContents } from '../../components/article/TableOfContents';
 import { SITE } from '../../lib/site';
 import { articleSchema } from '../../lib/structured-data';
 
@@ -21,11 +23,12 @@ interface Props {
 }
 
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 
 const mdxComponents = {
   Figure,
   Note,
+  TableOfContents: () => React.createElement(TableOfContents, { headings }),
 };
 ---
 
