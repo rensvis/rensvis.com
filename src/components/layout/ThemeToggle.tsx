@@ -80,6 +80,7 @@ export function ThemeToggle() {
           size="icon"
           aria-label={`Theme: ${label}. Open theme menu`}
           aria-haspopup="listbox"
+          suppressHydrationWarning
         >
           {/* Icon via CSS from html.dark (set before paint) – no flash */}
           <Sun className="h-5 w-5 block dark:hidden" />
