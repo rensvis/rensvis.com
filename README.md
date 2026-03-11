@@ -41,6 +41,8 @@ npm install
 npm run dev
 ```
 
+**GitHub**: Use the `rensvis` account for git operations (not `rens-vis_kpn`). If needed: `gh auth switch --user rensvis`.
+
 ## Analytics
 
 Umami config is in `src/lib/analytics.ts`. Set `websiteId` from your Umami dashboard to enable tracking.

@@ -1,0 +1,10 @@
+---
+description: Use rensvis GitHub account for git operations (not rens-vis_kpn)
+alwaysApply: true
+---
+
+# GitHub Account for This Repo
+
+Use the **rensvis** account for git operations (push, etc.). Do not use `rens-vis_kpn` (work account).
+
+If the wrong account is active: `gh auth switch --user rensvis`
